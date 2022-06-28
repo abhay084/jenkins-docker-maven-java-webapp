@@ -115,8 +115,8 @@ pipeline {
     
                     
                     sh "ssh  -o  StrictHostKeyChecking=no ec2-user@13.232.250.244 sudo kubectl  delete    deployment myjavawebapp"
-                    sh "ssh  ec2-user@13.232.250.244 sudo kubectl  create    deployment myjavawebapp  --image=abhayganvir/javaweb:${BUILD_TAG} "
-                    sh "ssh ec2-user@13.232.250.244 sudo wget https://github.com/abhay084/jenkins-docker-maven-java-webapp.git/webappsvc.yml"
+                    sh "ssh  ec2-user@13.232.250.244 sudo kubectl  create    deployment myjavawebapp  --image=vimal13/javaweb:${BUILD_TAG}"
+                    sh "ssh ec2-user@13.232.250.244 sudo wget https://raw.githubusercontent.com/vimallinuxworld13/jenkins-docker-maven-java-webapp/master/webappsvc.yml"
                     sh "ssh ec2-user@13.232.250.244 sudo kubectl  apply -f webappsvc.yml"
                     sh "ssh ec2-user@13.232.250.244 sudo kubectl  scale deployment myjavawebapp --replicas=5"
                 }
@@ -131,7 +131,21 @@ pipeline {
     
   
         
-
+     post {
+         always {
+             echo "You can always see me"
+         }
+         success {
+              echo "I am running because the job ran successfully"
+         }
+         unstable {
+              echo "Gear up ! The build is unstable. Try fix it"
+         }
+         failure {
+             echo "OMG ! The build failed"
+             mail bcc: '', body: 'hi check this ..', cc: '', from: '', replyTo: '', subject: 'job ete fail', to: 'vdaga@lwindia.com'
+         }
+     }
 
     
     
